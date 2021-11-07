@@ -1,2 +1,2 @@
 Esto es una pagina web creada con flask, solo para mi portafolio :) .
-...
+.
