@@ -1,21 +1,21 @@
 from flask import Flask, request, make_response, redirect, render_template, session
 from flask_bootstrap import Bootstrap
-from flask_wtf import Flaskform
-from wtforms.fields import Stringfield, PasswordField, SubmitField
+from flask_wtf import FlaskForm
+from wtforms.fields import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired
-
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
 
 app.config['SECRET_KEY'] = 'SUPER SECRETO'
 
-todos = ['Comprar cafe', 'Enviar solicitud de compra', 'Entregar video a productor']
+
+todos = ['Comprar cafe', 'Enviar solicitud de compra', 'Entregar video a productor ']
 
 
-class LoginForm(Flaskform):
-    username = Stringfield('Nombre de usuario', validaors=[DataRequired()])
-    password = PasswordField('Password', validaors=[DataRequired()])
+class LoginForm(FlaskForm):
+    username = StringField('Nombre de usuario', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Enviar')
 
 
@@ -23,13 +23,14 @@ class LoginForm(Flaskform):
 def not_found(error):
     return render_template('404.html', error=error)
 
+
 @app.errorhandler(500)
-def internal_server(error):
+def server_error(error):
     return render_template('500.html', error=error)
 
 
 @app.route('/')
-def index(): 
+def index():
     user_ip = request.remote_addr
 
     response = make_response(redirect('/hello'))
@@ -41,7 +42,8 @@ def index():
 @app.route('/hello')
 def hello():
     user_ip = session.get('user_ip')
-    LoginForm = LoginForm()
+    login_form = LoginForm()
+
     context = {
         'user_ip': user_ip,
         'todos': todos,
